@@ -292,12 +292,12 @@ input[type=text]:focus{border-color:var(--gold-dim);}
 
     <div id="player-areas-list"></div>
 
-    <div class="setup-note">All 10 fingers are always in the game. Body areas are destinations only — pegs cannot be placed directly on them.</div>
+    <div class="setup-note">All 10 fingers are always in the game. Each player's own pegs come from their own supply (default 30). Pegs reach body areas mainly by Move, Chaos, coin flips and Group Torture.</div>
   </div>
 
   <div class="card" style="width:100%;max-width:520px;padding:16px 20px;">
     <div class="card-title">⏱ Game Timer</div>
-    <div style="font-family:'IM Fell English',serif;font-style:italic;font-size:13px;color:var(--text-dim);margin-bottom:10px;">When time runs out, the player(s) with the most lives win. Ties are shared victories.</div>
+    <div style="font-family:'IM Fell English',serif;font-style:italic;font-size:13px;color:var(--text-dim);margin-bottom:10px;">The last 5 minutes are the End Game: one final Group Torture, then the player(s) with the most lives win. Ties are shared victories. Minimum 10 minutes.</div>
     <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
       <label style="font-family:'Cinzel',serif;font-size:12px;color:var(--text-dim);">HRS</label>
       <input type="number" id="timer-h" min="0" max="9" value="1" style="width:56px;background:var(--bg3);border:1px solid var(--border2);color:var(--parchment2);font-family:'Cinzel',serif;font-size:18px;text-align:center;padding:5px;border-radius:3px;">
@@ -348,7 +348,7 @@ input[type=text]:focus{border-color:var(--gold-dim);}
           <li>Remove a specific peg from an opponent — pick the exact finger or body area</li>
           <li>Guaranteed — no dice roll needed. The peg is removed immediately.</li>
           <li>Each player gets <strong>2 removes total</strong> for the whole game — use them wisely!</li>
-          <li>Remove is <strong>unavailable during End Game</strong> (last 5 minutes)</li>
+          <li>Remove is <strong>unavailable once End Game starts</strong></li>
         </ul>
       </div>
 
@@ -391,7 +391,8 @@ input[type=text]:focus{border-color:var(--gold-dim);}
           <div class="tcard-hdr"><span class="ticon">💙</span><span class="tname">LIVES</span></div>
           <ul class="tbullets">
             <li>Each player starts with 3 lives</li>
-            <li>Use a life to remove one of your own pegs</li>
+            <li>Use a life to remove one of your own pegs — any time, even on someone else's turn</li>
+            <li>A body area cleared with a life is <strong>protected 🛡 for your next 3 turns</strong> — no new pegs, no torture there</li>
             <li>Lose all lives → eliminated</li>
           </ul>
         </div>
@@ -400,8 +401,7 @@ input[type=text]:focus{border-color:var(--gold-dim);}
           <ul class="tbullets">
             <li>Fires after every round</li>
             <li>11 random events: finger frenzy, body blow, body swap, oldest peg torture, oldest peg rotation, double body, finger scatter, peg storm, triple torture, peg equaliser — or <strong>⛓ Group Torture</strong></li>
-            <li>Backfire: rolling a 1 on Place or Move puts a peg on <em>you</em></li>
-            <li>Everyone starts with 5 pegs on random fingers</li>
+            <li>Hits every player at once — the screen lists what each person does</li>
           </ul>
         </div>
       </div>
@@ -439,7 +439,7 @@ input[type=text]:focus{border-color:var(--gold-dim);}
       <!-- Goal -->
       <div style="background:linear-gradient(135deg,#1a1000,#2a1a00);border:1px solid var(--gold-dim);border-radius:6px;padding:16px 20px;text-align:center;">
         <div style="font-family:'Cinzel Decorative',cursive;font-size:15px;color:var(--gold2);margin-bottom:6px;">🏆 Goal</div>
-        <div style="font-family:'IM Fell English',serif;font-size:16px;color:var(--parchment);line-height:1.6;">Be the last player with lives remaining. Eliminate your opponents by loading them with pegs until they run out of lives.</div>
+        <div style="font-family:'IM Fell English',serif;font-size:16px;color:var(--parchment);line-height:1.6;">Everyone starts with 5 pegs on random fingers. Load your opponents with pegs so they burn through their lives. When the timer runs down, the final Group Torture decides who gives in — then <strong>most lives left wins</strong> (or be the last one standing).</div>
       </div>
 
     </div>
@@ -525,6 +525,9 @@ input[type=text]:focus{border-color:var(--gold-dim);}
     Fires after every round. Roll a d11:<br>
     1: 🖐 Finger Frenzy &nbsp;|&nbsp; 2: 💪 Body Blow &nbsp;|&nbsp; 3: 🔀 Body Swap &nbsp;|&nbsp; 4: 🔩 Oldest Peg Torture &nbsp;|&nbsp; 5: 🔄 Oldest Peg Rotation &nbsp;|&nbsp; 6: ➕ Double Body &nbsp;|&nbsp; 7: 💨 Finger Scatter &nbsp;|&nbsp; 8: 💥 Peg Storm &nbsp;|&nbsp; 9: 🎯 Triple Torture &nbsp;|&nbsp; 10: ⚖ Peg Equaliser &nbsp;|&nbsp; 11: ⛓ Group Torture
 
+    <h3>🩺 Wellness</h3>
+    Every 20 minutes there's a wellness check, at the end of a round so no-one's turn is interrupted. Every second one (40 minutes, 80 minutes…) is a <strong>Group Wellness</strong>: the app shows everyone their oldest peg (or they can pick a different one of their own). Everyone takes it off, massages the spot for 30 seconds, then puts it back on the same spot. The host can pause or add time.
+
     <h3>⛓ Group Torture</h3>
     Happens at least three times a game: about a third of the way through, about two thirds of the way through, and as the End Game — plus whenever Chaos rolls 11. It always starts at a turn change, never mid-turn. The game clock keeps running.<br>
     Everyone uses a nipple peg. Already got one on? Use that one. If not, a new peg goes on a nipple.<br>
@@ -533,7 +536,7 @@ input[type=text]:focus{border-color:var(--gold-dim);}
     Afterwards everyone takes their Group Torture peg off — even if it was on before.
 
     <h3>Coin Flip</h3>
-    After every turn, a coin is flipped. Tails = nothing. Heads = one random effect:<br>
+    Flipped after every turn with 4+ players, or every other turn with 3 or fewer. Tails = nothing. Heads = one random effect:<br>
     Add peg to your body · Add peg to your finger · Shift your body peg · Add to a random player's body · Add to a random player's finger · Torture a random player's random body peg · (rarely) Remove a peg from a random player.
 
     <h3>Mercy</h3>
@@ -561,8 +564,10 @@ input[type=text]:focus{border-color:var(--gold-dim);}
     <h3>If something freezes</h3>
     Tap the ✕ on the popup, or open ✏️ Host Edit → ⚠ Unstick. Then tap Next. The game also saves itself on this device — if the page reloads, tap ▶ Resume game.
 
+    <h3>Lives &amp; protection</h3>
+    💙 Use Life can be pressed at any time, on anyone's turn, to take one peg off that player. A body area cleared this way is protected 🛡 for that player's next 3 turns: nothing can be placed or moved there and it can't be tortured. Challenge penalties and the host's ✏️ Edit ignore protection.
     <h3>Elimination</h3>
-    A player is eliminated when they run out of lives (lives reach 0 after using the 💙 Use Life button). The host can also manually eliminate a player who gives up — click 🏳 on their card.
+    A player is eliminated when they run out of lives (lives reach 0 after using the 💙 Use Life button, or by giving in during the End Game). The host can also eliminate a player who gives up — tap 🏳 on their card twice.
   </div>
 </div>
 
@@ -751,6 +756,24 @@ input[type=text]:focus{border-color:var(--gold-dim);}
   </div>
 </div>
 
+<!-- Group Wellness -->
+<div class="ov" id="ov-gwell">
+  <div class="ovbox" style="max-width:480px;text-align:center;">
+    <button class="ov-close-btn" id="gw-close" title="Close">&#x2715;</button>
+    <div style="font-size:48px;margin-bottom:4px;">💆</div>
+    <div class="ovtitle" style="color:var(--green2);font-size:22px;margin-bottom:4px;">Group Wellness</div>
+    <div id="gw-round" style="font-family:'Cinzel',serif;font-size:12px;letter-spacing:2px;color:var(--text-dim);margin-bottom:12px;"></div>
+    <div class="swap-plan" id="gw-step" style="border-color:var(--green2);margin-top:0;margin-bottom:12px;"></div>
+    <div id="gw-clock" style="display:none;font-family:'Cinzel',serif;font-size:56px;font-weight:700;color:var(--green2);line-height:1.1;margin-bottom:10px;">0:30</div>
+    <div id="gw-list" style="text-align:left;margin-bottom:12px;"></div>
+    <button class="btn btn-gold" id="gw-go" style="width:100%;font-size:16px;padding:14px;"></button>
+    <div id="gw-ctrls" style="display:none;gap:8px;margin-top:8px;">
+      <button class="btn btn-ghost" id="gw-pause" style="flex:1;">⏸ Pause</button>
+      <button class="btn btn-ghost" id="gw-more" style="flex:1;">+15 seconds</button>
+    </div>
+  </div>
+</div>
+
 <!-- Group Torture Event -->
 <div class="ov" id="ov-grouptort">
   <div class="ovbox" style="max-width:520px;text-align:center;">
@@ -764,7 +787,7 @@ input[type=text]:focus{border-color:var(--gold-dim);}
       <button class="btn btn-gold" id="gt-start" style="width:100%;font-size:16px;padding:14px;">Pegs are on — START</button>
     </div>
     <div id="gt-run" style="display:none;">
-      <div id="gt-clock" style="font-family:'Cinzel',serif;font-size:34px;font-weight:700;color:var(--gold2);letter-spacing:2px;">4:00</div>
+      <div id="gt-clock" style="font-family:'Cinzel',serif;font-size:34px;font-weight:700;color:var(--gold2);letter-spacing:2px;">5:00</div>
       <div id="gt-level" style="font-family:'Cinzel',serif;font-size:12px;letter-spacing:2px;color:var(--amber2);margin-bottom:8px;"></div>
       <div id="gt-cmd" style="font-family:'Cinzel',serif;font-size:22px;font-weight:700;color:var(--parchment2);line-height:1.35;min-height:90px;padding:14px 10px;background:var(--bg3);border:2px solid var(--red);border-radius:6px;margin-bottom:8px;display:flex;align-items:center;justify-content:center;"></div>
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;"><div style="flex:1;height:6px;background:var(--bg3);border-radius:3px;overflow:hidden;"><div id="gt-bar" style="height:100%;width:100%;background:var(--red2);"></div></div><div id="gt-cmd-secs" style="font-family:'Cinzel',serif;font-size:12px;color:var(--text-dim);min-width:26px;text-align:right;"></div></div>
@@ -1140,6 +1163,8 @@ function removeAreaForPlayer(pid,name){
 function showTraining(){
   var err=qs('serr');
   if(players.length<2){err.textContent='Need at least 2 players!';return;}
+  var _th=parseInt(qs('timer-h').value)||0,_tm=parseInt(qs('timer-m').value)||0;
+  if(_th*60+_tm<10){err.textContent='Set the game timer to at least 10 minutes — the last 5 minutes are the End Game.';return;}
   err.textContent='';
   qs('setup').style.display='none';
   qs('training').style.display='block';
@@ -1316,7 +1341,7 @@ function startGame(){
   var tm=parseInt(qs('timer-m').value)||0;
   gameTimerTotal=(th*3600+tm*60)*1000;
   gameTimerRemaining=gameTimerTotal;
-  gtQueued=false;gtEndgameDone=false;gtState=null;gtSchedDone=0;gtSchedPending=false;
+  gtQueued=false;gtEndgameDone=false;gtState=null;gtSchedDone=0;gtSchedPending=false;wellnessCount=0;
   startGameTimer();
   qs('setup').style.display='none';
   qs('training').style.display='none';
@@ -1410,8 +1435,9 @@ function openMidJoinOverlay(){
     // Find the active player with fewest total pegs (fingers + body)
     var active=acts();
     if(!active.length)return {count:0,msg:'No active players to compare.'};
-    var minPegs=Math.min.apply(null,active.map(function(p){return totalPegs(p);}));
-    return {count:minPegs,msg:'Will start with '+minPegs+' peg'+(minPegs===1?'':'s')+' (matching least-loaded player) + 2 finger pegs.'};
+    var model=null;active.forEach(function(p){if(!model||totalPegs(p)<totalPegs(model))model=p;});
+    var mf=fingerCount(model),mb=totalPegs(model)-mf;
+    return {count:totalPegs(model),msg:'Will start like '+model.name+' (the least-loaded player): '+mf+' finger peg'+(mf===1?'':'s')+' and '+mb+' body peg'+(mb===1?'':'s')+', plus 2 extra finger pegs for joining late.'};
   }
 
   function renderJmAreas(){
@@ -1513,12 +1539,14 @@ function joinMidGame(name, areas, supply){
     turnCount:0, pegSupply:supply, removeUses:2, mercyUsed:false
   };
 
-  // Distribute starting pegs: match the fewest-pegged active player's total
+  // Starting pegs: copy the least-loaded active player's spread — their finger pegs as finger pegs, body pegs as body pegs
   var active=acts();
-  var minPegs=active.length?Math.min.apply(null,active.map(function(p){return totalPegs(p);})):0;
-
-  // Place body pegs randomly across available areas (respecting limits)
-  var bodyPegsToPlace=Math.max(0,minPegs);
+  var model=null;
+  active.forEach(function(p){if(!model||totalPegs(p)<totalPegs(model))model=p;});
+  var modelFingers=model?fingerCount(model):0;
+  var bodyPegsToPlace=model?(totalPegs(model)-modelFingers):0;
+  var ff0=[0,1,2,3,4,5,6,7,8,9];
+  shuffle(ff0).slice(0,Math.min(modelFingers,newPlayer.pegSupply)).forEach(function(i){newPlayer.fingers[i]=true;newPlayer.pegSupply=Math.max(0,newPlayer.pegSupply-1);});
   var attempts=0;
   while(bodyPegsToPlace>0&&attempts<200){
     attempts++;
@@ -1946,9 +1974,9 @@ function pickAction(act){
       });
       if(!egValidOpp.length){showMsg('No opponents have available body areas!');return;}
       mkChips(qs('selarea'),'[END GAME] Place peg on which opponent?',egValidOpp.map(function(pl){
-        return pl.name+' ('+(pl.pegSupply||0)+' pegs)';
+        return pl.name+' ('+(pl.pegSupply||0)+' in supply)';
       }),function(vname){
-        vname=vname.replace(/ \(\d+ pegs\)$/,'');
+        vname=vname.replace(/ \(\d+ in supply\)$/,'');
         selTarget=players.find(function(pl){return pl.name===vname;});
         qs('btn-roll').disabled=false;
         var note=document.createElement('div');note.className='hint-note';
@@ -1965,9 +1993,9 @@ function pickAction(act){
       }
       // Only show opponents with free fingers AND supply
       mkChips(qs('selarea'),'Place peg on which opponent?',validOpp.map(function(pl){
-        return pl.name+' ('+( pl.pegSupply||0)+' pegs)';
+        return pl.name+' ('+( pl.pegSupply||0)+' in supply)';
       }),function(vname){
-        vname=vname.replace(/ \(\d+ pegs\)$/,''); // strip supply suffix before lookup
+        vname=vname.replace(/ \(\d+ in supply\)$/,''); // strip supply suffix before lookup
         selTarget=players.find(function(pl){return pl.name===vname;});
         qs('btn-roll').disabled=false;
         var note=document.createElement('div');note.className='hint-note';
@@ -2271,6 +2299,7 @@ function doRoll(){
                  :'CRITICAL! The peg moves. ('+selVictim.name+' has no other body pegs to rotate.)')
         :'SUCCESS — move succeeds!';
       addLog(p.name+' MOVE on '+selVictim.name+' roll '+roll+(isCritMove?' CRITICAL':'')+' — determining destination...','success');
+      showDice(roll,isCritMove?'crit':'success',isCritMove?'CRITICAL!':'SUCCESS',selVictim.name+"'s peg on "+resolvedLoc.label+' is moving — choosing where…');
       pendingMoveData={mover:p, victim:selVictim, loc:resolvedLoc, isCrit:isCritMove, critOld:critOld, roll:roll, rollType:isCritMove?'crit':'success', rollLabel:isCritMove?'CRITICAL!':'SUCCESS', rollDesc:critDesc, fingerNote:fingerNote};
       openMoveDestOverlay();
       return;
@@ -2310,8 +2339,10 @@ function removePegFromLoc(player,loc){
       player.bodyPegs[loc.key]--;
       player.pegSupply=(player.pegSupply||0)+1;
       if(player.pegAges&&player.pegAges[loc.key]){
-        player.pegAges[loc.key].shift(); // remove oldest age entry for this peg
-        if(player.pegAges[loc.key].length===0)delete player.pegAges[loc.key];
+        var ages=player.pegAges[loc.key];
+        var ix=(typeof loc.nth==='number'&&loc.nth>=0&&loc.nth<ages.length)?loc.nth:0; // the peg that was picked, else the oldest
+        ages.splice(ix,1);
+        if(ages.length===0)delete player.pegAges[loc.key];
       }
       return true;
     }
@@ -2463,6 +2494,7 @@ function rollDestControl(){
 
   var destOpts=[];
   (d.victim.areas||[]).forEach(function(a){
+    if(d.loc.type==='body'&&d.loc.key===a)return; // it's already there — not a move
     destOpts.push({label:a,type:'body',key:a});
   });
 
@@ -2528,6 +2560,8 @@ function rollDestControl(){
       renderAll();closeMoveDestOverlay();return;
     }
     var moveDesc=d.victim.name+"'s peg: "+d.loc.label+' → '+selectedOpt.label+' ('+chooser.name+' chose).';
+    var outcomeEl0=qs('dice-box').querySelector('.dice-outcome');
+    if(outcomeEl0)outcomeEl0.textContent=moveDesc;
     if(d.isCrit){
       var oldPegLoc=(d.critOld&&(d.victim.bodyPegs[d.critOld.key]||0)>0)?d.critOld:findOldestPegLoc(d.victim,{type:selectedOpt.type,key:selectedOpt.key});
       var critExtra=oldPegLoc
@@ -3320,7 +3354,7 @@ function openTortureOverlay(torturer,victim,numPegs){
     var protLeft=cooldownLeft(victim,peg.key);
     var chip=document.createElement('div');chip.className='chip';chip.dataset.pegKey=peg.key;
     var ageStr=peg.age!=null?(peg.age===0?' · placed this round':peg.age===1?' · 1 round old':' · '+peg.age+' rounds old'):'';
-    var shieldStr=prot?'<span style="font-size:12px;color:#aaccff;margin-left:5px;">⛲'+protLeft+'</span>':'';
+    var shieldStr=prot?'<span style="font-size:12px;color:#aaccff;margin-left:5px;">🛡'+protLeft+'</span>':'';
     chip.innerHTML='<span>'+peg.label+'</span>'+(ageStr?'<span style="font-size:12px;opacity:0.65;margin-left:5px;">'+ageStr+'</span>':'')+shieldStr;
     if(prot){
       chip.style.opacity='0.4';
@@ -3422,7 +3456,7 @@ function emergencyCloseOverlay(btn){
     if(id==='ov-chaos'){closeChaos();return;}                                  // chaos happens before the turn — just carry on
     if(el){el.classList.remove('open');el.style.display='';}
     pendingMoveData=null;
-    if(id==='ov-wellness'||id==='ov-endgame'||id==='ov-uselife')return;      // nothing in progress
+    if(id==='ov-wellness'||id==='ov-gwell'||id==='ov-endgame'||id==='ov-uselife'){gwStop();return;} // nothing in progress
     rolled=true;
     var nb=qs('btn-next');
     nb.disabled=false;nb.classList.add('ready');nb.textContent='⚠ RESUME / NEXT PLAYER';
@@ -3433,7 +3467,7 @@ function emergencyCloseOverlay(btn){
 function unstickGame(){
   try{
     if(gtState&&qs('ov-grouptort').classList.contains('open'))gtAbort();
-    ['ov-movedest','ov-challenge','ov-torture','ov-chaos','ov-lucky','ov-mercy','ov-coinflip','ov-uselife','ov-wellness','ov-endgame','ov-hostedit','ov-grouptort','ov-joinmid'].forEach(function(id){
+    ['ov-movedest','ov-challenge','ov-torture','ov-chaos','ov-lucky','ov-mercy','ov-coinflip','ov-uselife','ov-wellness','ov-gwell','ov-endgame','ov-hostedit','ov-grouptort','ov-joinmid'].forEach(function(id){
       var el=qs(id);if(el){el.classList.remove('open');}
     });
     doCoinFlip._finish=null;
@@ -3693,13 +3727,10 @@ function advance(){
   var incoming=cp();
   if(incoming)incoming.turnCount=(incoming.turnCount||0)+1;
   if(gtQueued){gtQueued=false;gtSchedPending=false;gtEndgameDone=true;renderAll();resetTurnUI();openGroupTorture('endgame');return;}
-  if(gtSchedPending&&!endGamePhase){gtSchedPending=false;renderAll();resetTurnUI();openGroupTorture('scheduled');return;}
   if(chaosNow&&!endGamePhase){renderAll();resetTurnUI();doChaos();return;}
-  // Wellness check every 5 rounds (rounds 5, 10, 15...)
-  if(roundJustCompleted&&completedRounds>0&&completedRounds%5===0){
-    qs('wellness-round-lbl').textContent='Round '+completedRounds+' complete';
-    qs('ov-wellness').classList.add('open');
-  }
+  if(gtSchedPending&&!endGamePhase){gtSchedPending=false;renderAll();resetTurnUI();openGroupTorture('scheduled');return;}
+  // Wellness check every 20 minutes, at the end of a round
+  if(roundJustCompleted)maybeWellness();
   renderAll();resetTurnUI();
 }
 
@@ -3942,6 +3973,7 @@ function doChaos(){
   delete doChaos._forceRoll;
   if(roll===11){
     if(acts().length>=2){
+      gtSchedPending=false; // this one counts — don't follow it with the scheduled one next turn
       addLog('CHAOS Turn '+turnNum+' Rolled 11: GROUP TORTURE!','chaos');
       openGroupTorture('chaos');
       return;
@@ -4209,7 +4241,7 @@ function doChaos(){
         }
       });
       if(!pMoves.length)return; // skip players with no finger pegs
-      changes.push(p.name+' ('+pMoves.length+' peg'+(pMoves.length!==1?'s':'')+'): '+pMoves.join(', '));
+      changes.push(p.name+' — '+pMoves.length+' finger peg'+(pMoves.length!==1?'s':'')+' move to the body:\n'+pMoves.join('\n'));
     });
     instr=changes.length?changes.join('\n\n'):'No players had finger pegs — nothing happened.';
 
@@ -4283,12 +4315,12 @@ function doChaos(){
           var dest=freeBodyFor(lowest);
           if(dest){
             addPegToLoc(lowest,{type:'body',key:dest},true); // skipSupply: supply was just returned
-            placed.push('finger→'+dest);
+            placed.push(FINGER_NAMES[fi2]+' → '+dest);
             fromFingers++;
           } else {
             // No free body area - put supply back (addPegToLoc failed, supply was returned by remove)
             // Actually supply was returned; just note it
-            placed.push(FINGER_NAMES[fi2]+'→supply (body full)');
+            placed.push(FINGER_NAMES[fi2]+' → back to supply (body full)');
           }
         }
         // If still need more, take from supply
@@ -4298,7 +4330,7 @@ function doChaos(){
           var dest2=freeBodyFor(lowest);
           if(!dest2){placed.push('body areas full');break;}
           addPegToLoc(lowest,{type:'body',key:dest2});
-          placed.push('supply→'+dest2);
+            placed.push('new peg → '+dest2);
           fromSupply++;
         }
         var finalCount=bodyCount(lowest);
@@ -4306,9 +4338,7 @@ function doChaos(){
         if(fromFingers)log+=' ('+fromFingers+' from fingers)';
         if(fromSupply)log+=' ('+fromSupply+' from supply)';
         addLog(log,'chaos');
-        instr=lowest.name+': '+lowestCount+' → '+finalCount+' body pegs\n'+
-              'Target was '+secondLowest.name+'\'s '+targetCount+' pegs\n'+
-              'Moves: '+placed.join(', ');
+        instr=lowest.name+' — fewest body pegs ('+lowestCount+'), brought up to '+finalCount+' to match '+secondLowest.name+':\n'+placed.join('\n');
       }
     }
   }
@@ -4363,7 +4393,7 @@ function openMercyOverlay(p){
     confirmPickBtn.disabled=true;
 
     // Remove chosen peg
-    removePegFromLoc(p,{type:'body',key:selectedPeg.area});
+    removePegFromLoc(p,{type:'body',key:selectedPeg.area,nth:selectedPeg.nth});
     var removed=[selectedPeg.area];
 
     // Remove 5 random remaining pegs
@@ -4427,13 +4457,126 @@ function closeChaos(){
   qs('chaos-player-diagrams').style.display='none';
   qs('chaos-player-diagrams').innerHTML='';
   renderAll();resetTurnUI();updateChaosDisplay();
-  // If this round also triggers wellness (every 5 rounds), show it after chaos
-  if(completedRounds>0&&completedRounds%5===0){
-    qs('wellness-round-lbl').textContent='Round '+completedRounds+' complete';
-    qs('ov-wellness').classList.add('open');
-  }
+  // If a wellness check is due, show it after chaos
+  maybeWellness(); // chaos runs at the end of a round
 }
 
+
+
+// ══════════════════════════════════════════════════════ WELLNESS
+// Every 20 minutes (at a round end). Every second one is a Group Wellness:
+// everyone takes off their oldest peg (or one they choose), massages the spot for 30 seconds, then puts it back.
+var GW_SECONDS=30, gwState=null;
+var WELLNESS_EVERY=20*60000, wellnessCount=0; // a wellness check every 20 minutes of play, at the end of a round
+function gameElapsed(){return Math.max(0,(gameTimerTotal||0)-(gameTimerRemaining||0));}
+function maybeWellness(){
+  if(endGamePhase)return;
+  if(gameElapsed()<(wellnessCount+1)*WELLNESS_EVERY)return;
+  wellnessCount=Math.floor(gameElapsed()/WELLNESS_EVERY); // catch up so they never stack
+  showWellness();
+}
+function showWellness(){
+  if(wellnessCount%2===0){openGroupWellness();return;} // every second check (40 min, 80 min…) is a Group Wellness
+  qs('wellness-round-lbl').textContent=Math.round(gameElapsed()/60000)+' minutes in';
+  qs('ov-wellness').classList.add('open');
+}
+function gwPegOptions(p){
+  var o=[];
+  (p.areas||[]).forEach(function(a){
+    var n=p.bodyPegs[a]||0;if(!n)return;
+    var ag=gtPegAge(p,a);
+    o.push({type:'body',key:a,label:a,age:ag,sub:ag===0?'new':'on '+ag+' round'+(ag===1?'':'s')});
+  });
+  o.sort(function(x,y){return y.age-x.age;});
+  p.fingers.forEach(function(v,i){if(v)o.push({type:'finger',key:i,label:FINGER_NAMES[i],age:-1,sub:'finger'});});
+  return o;
+}
+function gwStop(){if(gwState&&gwState.iv){clearInterval(gwState.iv);gwState.iv=null;}}
+function openGroupWellness(){
+  gwStop();
+  var rows=acts().map(function(p){var opts=gwPegOptions(p);return {p:p,opts:opts,pick:opts[0]||null};});
+  gwState={rows:rows,phase:'setup',left:GW_SECONDS*1000,last:0,paused:false,iv:null};
+  qs('gw-round').textContent=Math.round(gameElapsed()/60000)+' minutes in';
+  addLog('GROUP WELLNESS: '+rows.map(function(r){return r.p.name+' → '+(r.pick?r.pick.label:'no pegs');}).join(', '),'success');
+  gwRender();
+  qs('gw-close').onclick=function(){gwClose();};
+  qs('ov-gwell').classList.add('open');
+}
+function gwRender(){
+  var st=gwState;if(!st)return;
+  var step=qs('gw-step'),list=qs('gw-list'),go=qs('gw-go'),clock=qs('gw-clock'),ctr=qs('gw-ctrls');
+  list.innerHTML='';
+  if(st.phase==='setup'){
+    step.innerHTML='<div class="swap-plan-h" style="color:var(--green2);">STEP 1 — GET READY</div>'+
+      '<div class="swap-plan-row">Everyone takes off the peg shown by their name — your <strong>oldest</strong> peg. Want a different one? Tap <strong>Change</strong>.</div>'+
+      '<div class="swap-plan-row">Then you\'ll massage that spot for '+GW_SECONDS+' seconds and put the peg back on.</div>';
+    clock.style.display='none';ctr.style.display='none';
+    st.rows.forEach(function(r){list.appendChild(gwRow(r,true));});
+    go.className='btn btn-gold';go.textContent='Pegs are off — start the '+GW_SECONDS+' seconds';
+    go.onclick=function(){st.phase='massage';st.last=Date.now();gwBeepSafe(660);gwRender();st.iv=setInterval(function(){try{gwTick();}catch(e){reportError(e);}},250);};
+  } else if(st.phase==='massage'){
+    step.innerHTML='<div class="swap-plan-h" style="color:var(--green2);">STEP 2 — MASSAGE</div>'+
+      '<div class="swap-plan-row">Gently massage the spot where your peg was. Breathe.</div>';
+    clock.style.display='block';ctr.style.display='flex';
+    st.rows.forEach(function(r){list.appendChild(gwRow(r,false));});
+    go.className='btn btn-ghost';go.textContent='Skip — time to put pegs back';
+    go.onclick=function(){gwStop();st.phase='replace';gwBeepSafe(880);gwRender();};
+    var pb=qs('gw-pause');pb.textContent=st.paused?'▶ Resume':'⏸ Pause';
+    pb.onclick=function(){st.paused=!st.paused;st.last=Date.now();pb.textContent=st.paused?'▶ Resume':'⏸ Pause';};
+    qs('gw-more').onclick=function(){st.left+=15000;gwTick();};
+    gwTick();
+  } else {
+    step.innerHTML='<div class="swap-plan-h" style="color:var(--gold2);">STEP 3 — PEGS BACK ON</div>'+
+      '<div class="swap-plan-row">Everyone puts their peg <strong>back on the same spot</strong>.</div>';
+    clock.style.display='none';ctr.style.display='none';
+    st.rows.forEach(function(r){list.appendChild(gwRow(r,false));});
+    go.className='btn btn-gold';go.textContent='All pegs back on — continue';
+    go.onclick=function(){addLog('GROUP WELLNESS done — all pegs back on.','success');gwClose();};
+  }
+}
+function gwRow(r,canChange){
+  var row=document.createElement('div');row.className='cx-card';row.style.borderLeftColor='var(--green2)';
+  var top=document.createElement('div');top.style.cssText='display:flex;justify-content:space-between;align-items:center;gap:8px;';
+  var left=document.createElement('div');
+  var nm=document.createElement('div');nm.className='cx-name';nm.textContent=r.p.name;left.appendChild(nm);
+  var ln=document.createElement('div');ln.className='cx-line';
+  if(r.pick){ln.innerHTML='<strong style="color:var(--gold2);font-size:19px;"></strong> <span style="font-size:13px;color:var(--text-dim);"></span>';ln.children[0].textContent=r.pick.label;ln.children[1].textContent=r.pick.sub+(r.pick===r.opts[0]&&r.pick.age>=0?' · oldest':'');}
+  else ln.textContent='No pegs on — enjoy the break';
+  left.appendChild(ln);top.appendChild(left);
+  if(canChange&&r.opts.length>1){
+    var ch=document.createElement('button');ch.className='btn btn-ghost';ch.style.cssText='padding:6px 10px;font-size:12px;flex:0 0 auto;';ch.textContent='Change';
+    ch.onclick=function(){
+      if(row.querySelector('.chips')){row.querySelector('.chips').remove();return;}
+      var chips=document.createElement('div');chips.className='chips';chips.style.marginTop='8px';
+      r.opts.forEach(function(o){
+        var cp_=document.createElement('div');cp_.className='chip'+(o===r.pick?' sel':'');
+        cp_.innerHTML='<span></span><span class="chip-sub"></span>';cp_.children[0].textContent=o.label;cp_.children[1].textContent=o.sub;
+        cp_.onclick=function(){r.pick=o;gwRender();};
+        chips.appendChild(cp_);
+      });
+      row.appendChild(chips);
+    };
+    top.appendChild(ch);
+  }
+  row.appendChild(top);
+  return row;
+}
+function gwTick(){
+  var st=gwState;if(!st||st.phase!=='massage')return;
+  var now=Date.now();
+  if(!st.paused)st.left-=Math.min(2000,Math.max(0,now-st.last));
+  st.last=now;
+  var s=Math.max(0,Math.ceil(st.left/1000));
+  qs('gw-clock').textContent=Math.floor(s/60)+':'+(s%60<10?'0':'')+(s%60);
+  qs('gw-clock').style.opacity=st.paused?'0.4':'1';
+  if(st.left<=0){gwStop();st.phase='replace';gwBeepSafe(880);gwRender();}
+}
+function gwBeepSafe(f){try{gtBeep(f,300);}catch(e){}}
+function gwClose(){
+  gwStop();gwState=null;
+  qs('ov-gwell').classList.remove('open');
+  renderAll();
+}
 
 // ══════════════════════════════════════════════════════ GROUP TORTURE EVENT
 // Fires once when End Game starts (queued to the next turn) and on chaos roll 11.
@@ -4760,10 +4903,7 @@ function gtClose(loser){
   qs('ov-grouptort').classList.remove('open');
   renderAll();resetTurnUI();updateChaosDisplay();
   if(loser&&loser.lives<=0&&!loser.elim){eliminatePlayer(loser,loser.name+' is out of lives — ELIMINATED!');return;}
-  if(src==='chaos'&&completedRounds>0&&completedRounds%5===0){
-    qs('wellness-round-lbl').textContent='Round '+completedRounds+' complete';
-    qs('ov-wellness').classList.add('open');
-  }
+  if(src==='chaos')maybeWellness();
 }
 function escHtml(s){return String(s).replace(/[&<>"']/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];});}
 
@@ -5077,6 +5217,7 @@ function buildSaveBlob(){
     turnDone: !!rolled && !qs('btn-next').disabled,
     gtQueued: gtQueued,
     gtSchedDone: gtSchedDone,
+    wellnessCount: wellnessCount,
     gtSchedPending: gtSchedPending,
     gtEndgameDone: gtEndgameDone,
     gameTimerEnabled: gameTimerEnabled,
@@ -5120,6 +5261,7 @@ function loadSaveBlob(blob){
   gtQueued          = !!state.gtQueued;
   gtEndgameDone     = !!state.gtEndgameDone;
   gtSchedDone       = state.gtSchedDone||0;
+  wellnessCount     = state.wellnessCount||0;
   gtSchedPending    = !!state.gtSchedPending;
   gtState           = null;
   gameTimerEnabled  = state.gameTimerEnabled || false;
