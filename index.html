@@ -61,7 +61,6 @@ input[type=text]:focus{border-color:var(--gold-dim);}
 .pip{width:11px;height:11px;border-radius:50%;border:1px solid var(--border2);background:var(--bg3);transition:all 0.3s;}
 .pip.on{background:var(--amber2);border-color:var(--amber);box-shadow:0 0 5px rgba(240,165,0,0.6);}
 .gbody{display:flex;flex-direction:column;flex:1;}
-@media(min-width:768px){.gbody{flex-direction:row;height:calc(100vh - 57px);}.action-panel{width:340px;flex-shrink:0;border-right:1px solid var(--border2);overflow-y:auto;}.players-panel{flex:1;overflow-y:auto;}.log-panel{display:none;}}
 
 /* ── ACTION PANEL ── */
 .action-panel{background:var(--bg2);border-bottom:1px solid var(--border2);padding:14px 16px;}
@@ -262,6 +261,47 @@ input[type=text]:focus{border-color:var(--gold-dim);}
 .cx-name{font-family:'Cinzel',serif;font-weight:700;font-size:17px;color:var(--gold2);letter-spacing:1px;margin-bottom:2px;}
 .cx-line{font-family:'IM Fell English',serif;font-size:17px;line-height:1.45;color:var(--parchment2);}
 .btn:disabled,.btn[disabled]{opacity:0.35;filter:grayscale(0.7);cursor:not-allowed;box-shadow:none;}
+.desk-only{display:none;}
+@media(min-width:768px){.desk-only{display:inline-block;}}
+@media(min-width:768px){.log-panel{max-height:none;height:auto;align-self:stretch;}}
+/* ── Desktop layout: one screen, no page scrolling; panels scroll on their own ── */
+@media(min-width:768px){
+  html,body{height:100%;}
+  #game{height:100vh;height:100dvh;min-height:0;overflow:hidden;}
+  .gh{flex-shrink:0;}
+  .gbody{flex-direction:row;flex:1;min-height:0;height:auto;}
+  .action-panel{width:340px;flex-shrink:0;border-right:1px solid var(--border2);overflow-y:auto;border-bottom:none;}
+  .players-panel{flex:1;min-width:0;overflow:auto;padding:10px 12px;}
+  .log-panel{display:none;width:300px;flex-shrink:0;border-top:none;border-left:1px solid var(--border2);max-height:none;overflow-y:auto;}
+  body.show-log .log-panel{display:block;}
+  .pgrid{gap:10px;align-content:start;}
+  .pcard{padding:10px 12px;min-width:0;}
+  .pcard-hdr{margin-bottom:6px;}
+  .lives-row{margin-bottom:6px;}
+  .peg-tot{margin-bottom:6px;}
+  .hand-section{margin-bottom:6px;}
+  .hand-section-title,.areas-section-title{margin-bottom:3px;}
+  .hands-wrap svg{width:68px;height:auto;}
+  .arow{gap:5px;line-height:1.15;}
+  .aname{font-size:14px;width:100px;}
+  .atrack{width:122px;}
+  .dot{width:12px;height:12px;}
+  .elim-btn{margin-top:6px;padding:6px;}
+  .action-panel{padding:12px 14px;}
+}
+/* Shorter PC screens (laptops): tighter host panel so Roll and Next stay in view */
+@media(min-width:768px) and (max-height:820px){
+  .instr{font-size:18px;margin-bottom:8px;}
+  .actgrid{gap:6px;margin-bottom:10px;}
+  .actbtn{padding:9px 6px;font-size:14px;letter-spacing:1px;}
+  .actbtn .ico{font-size:20px;}
+  .btn-roll{padding:12px;font-size:15px;}
+  .dice-box{min-height:60px;padding:6px;}
+  .dice-outcome{font-size:21px;padding:10px 12px;}
+  .hint-note{font-size:16px;}
+  .chip{font-size:15px;padding:5px 10px;}
+  #pool-bar{padding:5px 10px;}
+}
 </style>
 </head>
 <body>
@@ -461,7 +501,7 @@ input[type=text]:focus{border-color:var(--gold-dim);}
       <div class="chaos-lbl">⚡ Chaos in <span id="round-num">—</span> turns</div>
       <div id="timer-display" style="display:none;font-family:'Cinzel',serif;font-size:12px;letter-spacing:1px;color:var(--amber2);margin-top:2px;text-align:center;"></div>
       <div class="pips" id="pips"></div>
-      <button id="host-edit-btn" style="margin-top:4px;background:none;border:1px solid var(--border2);color:var(--text-dim);font-family:'Cinzel',serif;font-size:11px;letter-spacing:0;padding:4px 8px;border-radius:3px;cursor:pointer;">✏️ Edit</button>
+      <button id="log-toggle-btn" class="desk-only" style="margin-top:4px;margin-right:4px;background:none;border:1px solid var(--border2);color:var(--text-dim);font-family:'Cinzel',serif;font-size:11px;letter-spacing:0;padding:4px 8px;border-radius:3px;cursor:pointer;">📜 Log</button><button id="host-edit-btn" style="margin-top:4px;background:none;border:1px solid var(--border2);color:var(--text-dim);font-family:'Cinzel',serif;font-size:11px;letter-spacing:0;padding:4px 8px;border-radius:3px;cursor:pointer;">✏️ Edit</button>
     </div>
   </div>
 
@@ -490,8 +530,6 @@ input[type=text]:focus{border-color:var(--gold-dim);}
     <div class="players-panel">
       <div class="pgrid" id="pgrid"></div>
     </div>
-  </div>
-
   <div class="log-panel">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
       <div class="log-title" style="margin-bottom:0;">Battle Log</div>
@@ -499,6 +537,8 @@ input[type=text]:focus{border-color:var(--gold-dim);}
     </div>
     <div id="logentries"></div>
   </div>
+  </div>
+
 </div>
 
 <!-- Rules -->
@@ -532,7 +572,7 @@ input[type=text]:focus{border-color:var(--gold-dim);}
     Happens at least three times a game: about a third of the way through, about two thirds of the way through, and as the End Game — plus whenever Chaos rolls 11. It always starts at a turn change, never mid-turn. The game clock keeps running.<br>
     Everyone uses a nipple peg. Already got one on? Use that one. If not, a new peg goes on a nipple.<br>
     Opted out of nipples? A peg that's been on 3+ rounds is used; otherwise a new peg goes on your hardest area (tongue, areola/breast, genitals, ears, lips…).<br>
-    The screen calls out what to do — twist, off &amp; on, tug — and it gets nastier every minute. Each command has its own countdown. <strong>First to tap out loses a life.</strong> If nobody taps out in 5 minutes, everyone survives.<br>
+    The screen calls out what to do — twist, off &amp; on, tug, flick — and it gets nastier every minute. Each command has its own countdown. Every Group Torture draws a different set of commands from a pool of 40+, avoiding ones already used that game, so no two are the same. <strong>First to tap out loses a life.</strong> If nobody taps out in 5 minutes, everyone survives.<br>
     Afterwards everyone takes their Group Torture peg off — even if it was on before.
 
     <h3>Coin Flip</h3>
@@ -1274,7 +1314,17 @@ function copyBattleLog(){
     fallbackCopy(txt,onSuccess);
   }
 }
+function setLogShown(on){
+  document.body.classList.toggle('show-log',!!on);
+  try{localStorage.setItem('pegwars-showlog',on?'1':'0');}catch(e){}
+  var b=qs('log-toggle-btn');if(b)b.style.color=on?'var(--gold2)':'';
+  fitPlayersToScreen();
+}
 function wireGameButtons(){
+  var want='1';
+  try{want=localStorage.getItem('pegwars-showlog')||(window.innerWidth>=1500?'1':'0');}catch(e){want=window.innerWidth>=1500?'1':'0';}
+  setLogShown(want==='1');
+  qs('log-toggle-btn').onclick=function(){setLogShown(!document.body.classList.contains('show-log'));};
   qs('host-edit-btn').onclick=openHostEdit;
   qs('he-add-midgame').onclick=function(){qs('ov-hostedit').classList.remove('open');openMidJoinOverlay();};
   qs('copy-log-btn').onclick=copyBattleLog;
@@ -1341,13 +1391,14 @@ function startGame(){
   var tm=parseInt(qs('timer-m').value)||0;
   gameTimerTotal=(th*3600+tm*60)*1000;
   gameTimerRemaining=gameTimerTotal;
-  gtQueued=false;gtEndgameDone=false;gtState=null;gtSchedDone=0;gtSchedPending=false;wellnessCount=0;
+  gtQueued=false;gtEndgameDone=false;gtState=null;gtSchedDone=0;gtSchedPending=false;wellnessCount=0;gtUsedCmds=[];
   startGameTimer();
   qs('setup').style.display='none';
   qs('training').style.display='none';
   qs('game').style.display='flex';
   qs('pool-bar').style.display='flex';
   qs('rfab-wrap').style.display='block';
+  try{window.scrollTo(0,0);}catch(e){}
   wireGameButtons();
   buildPips();renderAll();resetTurnUI();initChaosDisplay();
   startLines.forEach(function(s){addLog('START: '+s.p.name+' pegs up '+s.fingers.map(function(i){return FINGER_NAMES[i];}).join(', '),'chaos');});
@@ -1722,7 +1773,37 @@ function totalPegs(p){
 function d6(){return randInt(6)+1;}
 
 // ══════════════════════════════════════════════════════ RENDER
-function renderAll(){renderGrid();renderHeader();renderPips();renderPool();}
+function renderAll(){renderGrid();renderHeader();renderPips();renderPool();fitPlayersToScreen();}
+// On a PC, size the player grid so all the cards fit the window without scrolling.
+// Tries 1, 2 or 3 rows and keeps whichever lets the cards be biggest; scales the grid with CSS zoom.
+var FIT_MIN=0.55, FIT_MAX=1.25;
+function fitPlayersToScreen(){
+  var panel=qs('pgrid')&&qs('pgrid').parentElement, grid=qs('pgrid');
+  if(!panel||!grid)return;
+  if(window.innerWidth<768){grid.style.zoom='';grid.style.gridTemplateColumns='';return;}
+  var n=grid.children.length;if(!n)return;
+  var cs=getComputedStyle(panel);
+  var availW=panel.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight);
+  var availH=panel.clientHeight-parseFloat(cs.paddingTop)-parseFloat(cs.paddingBottom);
+  if(availW<=0||availH<=0)return;
+  var gap=10, minCardW=300;
+  // natural card size at zoom 1 with the cards laid out at their minimum width
+  grid.style.zoom='1';
+  grid.style.gridTemplateColumns='repeat('+n+',max-content)';
+  var cardH=0;for(var i=0;i<n;i++){var ch=grid.children[i];cardH=Math.max(cardH,ch.offsetHeight);minCardW=Math.max(minCardW,ch.scrollWidth);}
+  minCardW+=2; // borders
+  var best=null;
+  for(var rows=1;rows<=3;rows++){
+    var cols=Math.ceil(n/rows);
+    var z=Math.min((availW-gap*(cols-1))/(cols*minCardW),(availH-gap*(rows-1))/(rows*cardH));
+    if(!best||z>best.z)best={z:z,cols:cols};
+  }
+  var z=Math.max(FIT_MIN,Math.min(FIT_MAX,best.z));
+  grid.style.zoom=String(z);
+  grid.style.gridTemplateColumns='repeat('+best.cols+',minmax(0,1fr))';
+}
+var _fitT=null;
+window.addEventListener('resize',function(){clearTimeout(_fitT);_fitT=setTimeout(fitPlayersToScreen,120);});
 function renderHeader(){
   var p=cp();
   qs('gh-name').textContent=p?p.name.toUpperCase():'-';
@@ -4587,33 +4668,107 @@ var GT_LONG_ROUNDS=3;            // a peg on this many rounds counts as "on a lo
 var GT_RANK=[/tongue/i,/areola|breast/i,/clit|penis/i,/genital/i,/\bear\b/i,/lip/i,/nose/i,/eyebrow/i,/cheek/i,/neck/i,/between fingers/i,/thigh/i,/toe/i,/stomach/i];
 // Each command has its own length in seconds: ~3s to read and react, plus the time the action actually takes
 // (a 1-2s action per step, the full hold time for holds, and a generous ~15s per off & on — fiddly with pegged fingers).
-var GT_LEVELS=[
-  {name:'WARM UP',cmds:[
-    {t:'TAP the peg 3 times',s:6},
-    {t:'WIGGLE it side to side',s:8},
-    {t:'TWIST a quarter turn — hold it there',s:10},
-    {t:'SQUEEZE the peg shut — hold for 5',s:9},
-    {t:'HANDS OFF — hold still',s:10}]},
-  {name:'HEATING UP',cmds:[
-    {t:'FLICK the peg twice',s:6},
-    {t:'OFF & ON — take it off, put it straight back',s:20},
-    {t:'TWIST half a turn — hold for 5',s:10},
-    {t:'TUG gently outwards — hold for 3',s:8},
-    {t:'HANDS OFF — breathe',s:8}]},
-  {name:'NASTY',cmds:[
-    {t:'OFF & ON — twice',s:35},
-    {t:'TWIST as far as it goes — hold for 10',s:15},
-    {t:'PULL it outwards — hold for 5',s:10},
-    {t:'TWIST one way, then all the way back',s:9},
-    {t:'OFF & ON — then squeeze it for 5',s:25},
-    {t:'HANDS OFF — 5 seconds rest',s:7}]},
-  {name:'NO MERCY',cmds:[
-    {t:'OFF & ON three times',s:50},
-    {t:'TWIST & TUG together — hold for 10',s:15},
-    {t:'OFF — count to 3 — back ON',s:22},
-    {t:'FULL TWIST both ways, then OFF & ON',s:28},
-    {t:'HANDS OFF — 5 seconds rest',s:7}]}
+// Every command has a level (1 gentle → 4 brutal), a family (so two of the same kind never come back to back)
+// and its own length in seconds. Each Group Torture builds a fresh programme from this pool, avoiding commands
+// already used earlier in the game, so no two events play the same.
+var GT_CMDS=[
+  // level 1 — warm up
+  {l:1,f:'tap',   t:'TAP the peg 3 times',s:6},
+  {l:1,f:'tap',   t:'DRUM your fingers on the peg for 5 seconds',s:8},
+  {l:1,f:'wiggle',t:'WIGGLE it side to side',s:7},
+  {l:1,f:'wiggle',t:'ROCK the peg gently up and down',s:7},
+  {l:1,f:'twist', t:'TWIST a quarter turn — hold it there',s:9},
+  {l:1,f:'twist', t:'TWIST a quarter turn one way, then back',s:8},
+  {l:1,f:'squeeze',t:'SQUEEZE the peg shut — hold for 5',s:8},
+  {l:1,f:'press', t:'PRESS the peg flat against the skin — hold for 5',s:8},
+  {l:1,f:'tug',   t:'TUG very gently — just enough to feel it',s:6},
+  {l:1,f:'rest',  t:'HANDS OFF — hold still',s:8},
+  {l:1,f:'rest',  t:'HANDS OFF — deep breath in… and out',s:8},
+  // level 2 — heating up
+  {l:2,f:'flick', t:'FLICK the peg twice',s:6},
+  {l:2,f:'flick', t:'FLICK it from underneath',s:6},
+  {l:2,f:'offon', t:'OFF & ON — take it off, put it straight back',s:16},
+  {l:2,f:'offon', t:'OFF — count to 3 — back ON',s:16},
+  {l:2,f:'twist', t:'TWIST half a turn — hold for 5',s:9},
+  {l:2,f:'twist', t:'TWIST half a turn, then slowly back',s:9},
+  {l:2,f:'tug',   t:'TUG gently outwards — hold for 3',s:7},
+  {l:2,f:'tug',   t:'TUG it 3 times — small sharp pulls',s:7},
+  {l:2,f:'squeeze',t:'SQUEEZE and release — 5 times',s:9},
+  {l:2,f:'tap',   t:'TAP the peg hard — 5 times',s:7},
+  {l:2,f:'rest',  t:'HANDS OFF — breathe',s:7},
+  // level 3 — nasty
+  {l:3,f:'offon', t:'OFF & ON — twice',s:26},
+  {l:3,f:'offon', t:'OFF & ON — then squeeze it for 5',s:20},
+  {l:3,f:'offon', t:'OFF — pinch the spot for 3 — back ON',s:18},
+  {l:3,f:'twist', t:'TWIST as far as it goes — hold for 8',s:12},
+  {l:3,f:'twist', t:'TWIST one way, then all the way back',s:9},
+  {l:3,f:'tug',   t:'PULL it outwards — hold for 5',s:9},
+  {l:3,f:'tug',   t:'TUG it outwards and let it SNAP back',s:7},
+  {l:3,f:'wiggle',t:'WIGGLE it hard for 5 seconds',s:8},
+  {l:3,f:'flick', t:'FLICK it 5 times — fast',s:8},
+  {l:3,f:'press', t:'PRESS it in and TWIST a quarter turn — hold for 5',s:10},
+  {l:3,f:'rest',  t:'HANDS OFF — 5 seconds rest',s:6},
+  // level 4 — no mercy
+  {l:4,f:'offon', t:'OFF & ON three times',s:36},
+  {l:4,f:'offon', t:'FULL TWIST both ways, then OFF & ON',s:22},
+  {l:4,f:'offon', t:'OFF — tug the spot with your fingers for 3 — back ON',s:20},
+  {l:4,f:'twist', t:'TWIST & TUG together — hold for 8',s:12},
+  {l:4,f:'twist', t:'FULL TWIST, hold for 5, then snap it back',s:12},
+  {l:4,f:'tug',   t:'PULL it out as far as you dare — hold for 5',s:9},
+  {l:4,f:'tug',   t:'TUG it 5 times — hard',s:9},
+  {l:4,f:'flick', t:'FLICK it 10 times',s:12},
+  {l:4,f:'squeeze',t:'SQUEEZE the peg shut as hard as you can — hold for 8',s:11},
+  {l:4,f:'rest',  t:'HANDS OFF — 5 seconds rest',s:6},
+  // extra variety
+  {l:1,f:'tap',   t:'TAP the peg once a second for 5 seconds',s:8},
+  {l:1,f:'wiggle',t:'CIRCLE the peg slowly — 3 times round',s:9},
+  {l:1,f:'twist', t:'TWIST a quarter turn and WIGGLE',s:8},
+  {l:1,f:'press', t:'PUSH the peg towards the skin — hold for 3',s:7},
+  {l:1,f:'squeeze',t:'SQUEEZE the peg shut — 3 quick pulses',s:7},
+  {l:1,f:'tug',   t:'LIFT the peg slightly — hold for 3',s:7},
+  {l:2,f:'wiggle',t:'SHAKE the peg for 5 seconds',s:8},
+  {l:2,f:'twist', t:'TWIST a quarter turn 4 times, same direction',s:10},
+  {l:2,f:'tap',   t:'FLICK then TAP — 3 times each',s:9},
+  {l:2,f:'press', t:'PRESS the peg flat — hold for 8',s:11},
+  {l:2,f:'tug',   t:'TUG outwards and hold while you count to 5',s:9},
+  {l:2,f:'offon', t:'OFF — blow on the spot — back ON',s:16},
+  {l:2,f:'squeeze',t:'SQUEEZE the peg shut and WIGGLE — 5 seconds',s:9},
+  {l:3,f:'twist', t:'TWIST half a turn, hold for 5, then the other way',s:14},
+  {l:3,f:'tap',   t:'SLAP the peg — 5 times',s:8},
+  {l:3,f:'squeeze',t:'SQUEEZE shut hard — hold for 8',s:11},
+  {l:3,f:'tug',   t:'PULL outwards and WIGGLE — 5 seconds',s:9},
+  {l:3,f:'offon', t:'OFF — 3 quick squeezes of the spot — back ON',s:18},
+  {l:3,f:'press', t:'PRESS in hard and ROCK it — 5 seconds',s:9},
+  {l:3,f:'wiggle',t:'CIRCLE the peg fast — 5 times round',s:9},
+  {l:4,f:'twist', t:'TWIST as far as it goes — hold for 12',s:16},
+  {l:4,f:'tug',   t:'PULL outwards — hold for 10',s:14},
+  {l:4,f:'offon', t:'OFF — pinch the spot hard for 5 — back ON',s:20},
+  {l:4,f:'offon', t:'OFF & ON — then full twist and hold for 5',s:24},
+  {l:4,f:'wiggle',t:'SHAKE it hard for 8 seconds',s:11},
+  {l:4,f:'tap',   t:'SLAP the peg — 10 times',s:12},
+  {l:4,f:'press', t:'PRESS in as hard as you can — hold for 8',s:11}
 ];
+var GT_LEVEL_NAMES=['WARM UP','HEATING UP','NASTY','NO MERCY'];
+var gtUsedCmds=[]; // command texts already used this game (saved with the game)
+// Picks the next command for a level: unused-this-game first, never the same family twice running,
+// and once a level has been running a while it starts mixing in the next level's commands.
+function gtNextCmd(st,lvl,inLevelMs){
+  var hard=Math.min(4,lvl+1+(inLevelMs>GT_LEVEL_MS*0.6?1:0));
+  var pool=GT_CMDS.filter(function(x){return x.l>=lvl+1&&x.l<=hard&&x.f!==st.lastFam&&x.t!==st.cmdText;});
+  if(!pool.length)pool=GT_CMDS.filter(function(x){return x.l===lvl+1&&x.t!==st.cmdText;});
+  // rests only every so often
+  if(st.sinceRest<3)pool=pool.filter(function(x){return x.f!=='rest';})||pool;
+  var fresh=pool.filter(function(x){return gtUsedCmds.indexOf(x.t)<0&&st.usedHere.indexOf(x.t)<0;});
+  var freshHere=pool.filter(function(x){return st.usedHere.indexOf(x.t)<0;});
+  var pick=(fresh.length?fresh:freshHere.length?freshHere:pool);
+  var x=pick[randInt(pick.length)];
+  st.usedHere.push(x.t);
+  if(gtUsedCmds.indexOf(x.t)<0)gtUsedCmds.push(x.t);
+  if(gtUsedCmds.length>GT_CMDS.length-12)gtUsedCmds.splice(0,8); // ran through most of the pool — let the oldest ones come back
+  st.lastFam=x.f;
+  st.sinceRest=x.f==='rest'?0:(st.sinceRest||0)+1;
+  return x;
+}
 var GT_LEVEL_MS=75000; // a new level every 75 seconds (4 levels = 5 minutes); End Game stays at the top level after that
 function gtRank(a){for(var i=0;i<GT_RANK.length;i++)if(GT_RANK[i].test(a))return i;return 7.5;}
 function gtPegAge(p,a){var ag=p.pegAges&&p.pegAges[a];return ag&&ag.length?Math.max(0,roundNum-ag[0]):0;}
@@ -4695,7 +4850,7 @@ function openGroupTorture(source){
     var s=gtPickSpot(p);
     if(s)parts.push({p:p,spot:s});else sitOut.push(p);
   });
-  gtState={source:source,endgame:source==='endgame',phase:'setup',parts:parts,elapsed:0,last:0,paused:false,cmdAt:0,cmdIdx:-1,cmdLen:0,iv:null};
+  gtState={source:source,endgame:source==='endgame',phase:'setup',parts:parts,elapsed:0,last:0,paused:false,cmdAt:0,cmdIdx:-1,cmdLen:0,iv:null,usedHere:[],lastFam:null,sinceRest:0};
   addLog('GROUP TORTURE EVENT ('+(source==='endgame'?'End Game':source==='scheduled'?'Scheduled':'Chaos')+'): '+parts.map(function(x){return x.p.name+' → '+x.spot.label;}).join(', ')+(sitOut.length?' · sitting out: '+sitOut.map(function(p){return p.name;}).join(', '):''),'chaos');
   renderAll();
   if(parts.length<2){
@@ -4789,7 +4944,7 @@ function gtTick(){
   var now=Date.now();
   if(!st.paused)st.elapsed+=Math.min(2000,Math.max(0,now-st.last)); // cap jumps if the phone slept
   st.last=now;
-  var lvl=Math.min(GT_LEVELS.length-1,Math.floor(st.elapsed/GT_LEVEL_MS));
+  var lvl=Math.min(3,Math.floor(st.elapsed/GT_LEVEL_MS));
   if(st.endgame){
     var up=Math.floor(st.elapsed/1000);
     qs('gt-clock').textContent=Math.floor(up/60)+':'+(up%60<10?'0':'')+(up%60);
@@ -4800,11 +4955,10 @@ function gtTick(){
     if(left<=0){gtFinish(null);return;}
   }
   if(st.paused)return;
-  var L=GT_LEVELS[lvl];
-  qs('gt-level').textContent='LEVEL '+(lvl+1)+' — '+L.name+(st.endgame?' · held on for':'');
+  qs('gt-level').textContent='LEVEL '+(lvl+1)+' — '+GT_LEVEL_NAMES[lvl]+(st.endgame?' · held on for':'');
   if(st.cmdIdx<0||st.elapsed-st.cmdAt>=st.cmdLen){
-    var i;do{i=randInt(L.cmds.length);}while(L.cmds.length>1&&L.cmds[i].t===st.cmdText);
-    st.cmdText=L.cmds[i].t;st.cmdIdx=i;st.cmdAt=st.elapsed;st.cmdLen=L.cmds[i].s*1000;
+    var x=gtNextCmd(st,lvl,st.elapsed-lvl*GT_LEVEL_MS);
+    st.cmdText=x.t;st.cmdIdx=1;st.cmdAt=st.elapsed;st.cmdLen=x.s*1000;
     qs('gt-cmd').textContent=st.cmdText;
     gtBeep(lvl>=2?880:660,250);
   }
@@ -5219,6 +5373,7 @@ function buildSaveBlob(){
     gtSchedDone: gtSchedDone,
     wellnessCount: wellnessCount,
     gtSchedPending: gtSchedPending,
+    gtUsedCmds: gtUsedCmds,
     gtEndgameDone: gtEndgameDone,
     gameTimerEnabled: gameTimerEnabled,
     gameTimerTotal: gameTimerTotal,
@@ -5263,6 +5418,7 @@ function loadSaveBlob(blob){
   gtSchedDone       = state.gtSchedDone||0;
   wellnessCount     = state.wellnessCount||0;
   gtSchedPending    = !!state.gtSchedPending;
+  gtUsedCmds        = Array.isArray(state.gtUsedCmds)?state.gtUsedCmds:[];
   gtState           = null;
   gameTimerEnabled  = state.gameTimerEnabled || false;
   gameTimerTotal    = state.gameTimerTotal || 0;
@@ -5279,6 +5435,7 @@ function loadSaveBlob(blob){
   qs('game').style.display = 'flex';
   qs('pool-bar').style.display = 'flex';
   qs('rfab-wrap').style.display = 'block';
+  try{window.scrollTo(0,0);}catch(e){}
 
   wireGameButtons();
   startGameTimer();
